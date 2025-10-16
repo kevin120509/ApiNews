@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, Sequelize } = require('sequelize');
 const { connection } = require("../config.db");
 const { Profile } = require('./profilemodel');
 
@@ -42,27 +42,23 @@ const User = connection.define('user', {
     FechaAlta: {
         type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: "1990-01-01T00:00:00.000Z"
+        defaultValue: Sequelize.NOW
     },
     UserMod: {
         type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: ""
+        allowNull: true
     },
     FechaMod: {
         type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue:'1990-01-01T00:00:00.000Z'
+        allowNull: true
     },
     UserBaja: {
         type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: ""
+        allowNull: true
     },
     FechaBaja: {
         type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue:'1990-01-01T00:00:00.000Z'
+        allowNull: true
     },
 })
 

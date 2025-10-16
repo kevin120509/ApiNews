@@ -1,5 +1,6 @@
-const { User } = require('../models/UserModel')
+const { User } = require('../models/Usermodel')
 const { validationResult } = require('express-validator');
+const jwt = require('jsonwebtoken');
 
 const login = (request, response) => {
     const errors = validationResult(request);
@@ -14,7 +15,8 @@ const login = (request, response) => {
         },
     }).then(entitie => {
             if (entitie) {
-                response.status(201).json({message: "Login con éxito"});
+                const token = jwt.sign({usuario: entitie}, 'mi_llave_secreta', {expiresIn: '1h'});
+                response.status(201).json({usuario: entitie, token: token});
             }
             else {
                 response.status(401).json({message: "Sin autorización"});
@@ -32,14 +34,16 @@ const register = (request, response) => {
         return response.status(422).json({ errors: errors.mapped() });
     }
     request.body.perfil_id = 2
-    request.body.status = true
+    request.body.activo = true
 
     User.create(request.body).then(
         newEntitie => {
-            response.status(201).json(newEntitie)
+            const token = jwt.sign({usuario: newEntitie}, 'mi_llave_secreta', {expiresIn: '1h'});
+            response.status(201).json({usuario: newEntitie, token: token});
         }
     )
         .catch(err => {
+            console.error('Error al crear usuario:', err);
             response.status(500).send('Error al crear');
         })
 }

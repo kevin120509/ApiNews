@@ -20,7 +20,15 @@ const validatorRegister = [
 
     check('nick').notEmpty().withMessage('El campo nick es obligatorio')
         .isString().withMessage('El campo nick debe ser texto')
-        .isLength({ min: 2, max: 20 }).withMessage('El campo nick debe tener entre 2 y 20 caracteres'),
+        .isLength({ min: 2, max: 20 }).withMessage('El campo nick debe tener entre 2 y 20 caracteres')
+        .custom((value, { request }) => {
+            return User.findOne({ where: { nick: value } })
+                .then((user) => {
+                    if (user) {
+                        throw new Error('Ya existe un usuario con este nick')
+                    }
+                })
+        }),
 
     check('correo').notEmpty().withMessage('El campo correo es obligatorio')
         .isEmail().withMessage('El campo correo debe ser un correo valido')

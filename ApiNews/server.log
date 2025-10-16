@@ -1,0 +1,4 @@
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+Servidor escuchando en el puerto 3000
+Executing (default): SELECT 1+1 AS result
+Se ha establecido conexión con la base de datos
